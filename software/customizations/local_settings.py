@@ -1,0 +1,105 @@
+import os
+
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+
+SITEURL = "http://geoportal.icpac.net/"
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '::1']
+PROXY_ALLOWED_HOSTS = ("127.0.0.1", 'localhost', '::1')
+POSTGIS_VERSION = (2, 1, 2)
+
+
+DATABASES = {
+    'default': {
+         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'NAME': 'geonode',
+         'USER': 'geonode',
+         'PASSWORD': 'g30p0rtal8CPQC',
+     },
+    # vector datastore for uploads
+    'datastore' : {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        #'ENGINE': '', # Empty ENGINE name disables 
+        'NAME': 'geonode_data',
+        'USER' : 'geonode',
+        'PASSWORD' : 'g30p0rtal8CPQC',
+        'HOST' : 'localhost',
+        'PORT' : '5432',
+    }
+}
+
+# OGC (WMS/WFS/WCS) Server Settings
+OGC_SERVER = {
+    'default' : {
+        'BACKEND' : 'geonode.geoserver',
+        'LOCATION' : 'http://localhost/geoserver/',
+        'PUBLIC_LOCATION' : 'http://localhost/geoserver/',
+        'USER' : 'admin',
+        'PASSWORD' : 'geoserver',
+        'MAPFISH_PRINT_ENABLED' : True,
+        'PRINT_NG_ENABLED' : True,
+        'GEONODE_SECURITY_ENABLED' : True,
+        'GEOGIG_ENABLED' : False,
+        'WMST_ENABLED' : False,
+        'BACKEND_WRITE_ENABLED': True,
+        'WPS_ENABLED' : False,
+        'LOG_FILE': '%s/geoserver/data/logs/geoserver.log' % os.path.abspath(os.path.join(PROJECT_ROOT, os.pardir)),
+        # Set to name of database in DATABASES dictionary to enable
+        'DATASTORE': 'datastore', #'datastore',
+    }
+}
+
+CATALOGUE = {
+    'default': {
+        # The underlying CSW implementation
+        # default is pycsw in local mode (tied directly to GeoNode Django DB)
+        'ENGINE': 'geonode.catalogue.backends.pycsw_local',
+        # pycsw in non-local mode
+        # 'ENGINE': 'geonode.catalogue.backends.pycsw_http',
+        # GeoNetwork opensource
+        # 'ENGINE': 'geonode.catalogue.backends.geonetwork',
+        # deegree and others
+        # 'ENGINE': 'geonode.catalogue.backends.generic',
+
+        # The FULLY QUALIFIED base url to the CSW instance for this GeoNode
+        'URL': '%scatalogue/csw' % SITEURL,
+        # 'URL': 'http://localhost:8080/geonetwork/srv/en/csw',
+        # 'URL': 'http://localhost:8080/deegree-csw-demo-3.0.4/services',
+
+        # login credentials (for GeoNetwork)
+        'USER': 'admin',
+        'PASSWORD': 'admin',
+    }
+}
+
+# Default preview library
+#LAYER_PREVIEW_LIBRARY = 'geoext'
+
+#Custom 
+BING_API_KEY="Alf_6Us3Fr7lF7Do1OHXRfFEWKciIcTxKOqcGlYVYhMpltRYm_LixekGZ791Sm0V"
+
+MAP_BASELAYERS = [{
+    "source": {"ptype": "gxp_olsource"},
+    "type": "OpenLayers.Layer",
+    "args": ["No background"],
+    "visibility": False,
+    "fixed": True,
+    "group":"background"
+}, {
+    "source": {"ptype": "gxp_osmsource"},
+    "type": "OpenLayers.Layer.OSM",
+    "name": "mapnik",
+    "visibility": True,
+    "fixed": True,
+    "group": "background"
+},{
+"source": {
+           "ptype":"gxp_bingsource",
+           "apiKey": BING_API_KEY
+          },
+	"group":"background",
+	"name":"Aerial",
+	"visibility": False,
+	"fixed": True
+}]
+

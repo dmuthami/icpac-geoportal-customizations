@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block extra_head %}
+	<link href="{{ STATIC_URL }}geonode/css/base.css" rel="stylesheet"/>
+	<link href="{{ STATIC_URL }}geonode/css/icpac.css" rel="stylesheet"/>
+{% endblock %}
+{% block footer %}
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
+            <a href="/appsportal/" target="_blank">Apps Portal</a> |
+            <a href="http://www.icpac.net:8082/" target="_blank">ICPAC Website</a> |
+            <a href="http://geonode.igad.int/" target="_blank">IGAD Geoportal</a> |
+          </div>
+          <div class="col-md-4">
+            <div class="col-md-1 pull-right">
+              <a href="http://localhost"><img src="{{ STATIC_URL }}geonode/img/footer2.png"></a>
+            </div>
+            <label class="hidden">Language</label>
+            
+            
+            <form class="form-inline" action="/i18n/setlang/" method="post">
+            <input type='hidden' name='csrfmiddlewaretoken' value='MxOvUgm2eQkSmrZKa48CqKnXh1ObSHUL' />
+              <select class="col-md-6 pull-right" name="language" onchange="javascript:form.submit()">
+                
+                <option value="en"  selected="selected">
+                  English
+                </option>
+                
+                <option value="es" >
+                  Español
+                </option>
+                
+                <option value="it" >
+                  Italiano
+                </option>
+                
+                <option value="fr" >
+                  Français
+                </option>
+                
+              </select>
+            </form>
+            
+          </div>
+        </div>
+      </div>
+    </footer>
+{% endblock footer %}
+
